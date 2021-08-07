@@ -1,7 +1,7 @@
-package io.github.vonathar;
+package io.github.vonathar.io;
 
-import static io.github.vonathar.UrlFileParserTest.TestUtils.getExpectedUrls;
-import static io.github.vonathar.UrlFileParserTest.TestUtils.writeTestUrls;
+import static io.github.vonathar.io.UrlFileParserTest.TestUtils.getExpectedUrls;
+import static io.github.vonathar.io.UrlFileParserTest.TestUtils.writeTestUrls;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;

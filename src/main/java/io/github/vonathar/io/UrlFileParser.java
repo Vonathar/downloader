@@ -1,4 +1,4 @@
-package io.github.vonathar;
+package io.github.vonathar.io;
 
 import io.github.vonathar.exception.FileParsingException;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package io.github.vonathar;
+package io.github.vonathar.io;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
