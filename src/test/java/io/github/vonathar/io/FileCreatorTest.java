@@ -1,5 +1,8 @@
 package io.github.vonathar.io;
 
+import static io.github.vonathar.testutils.FileUtils.deleteRecursively;
+import static io.github.vonathar.testutils.FileUtils.getFileCount;
+import static io.github.vonathar.testutils.FileUtils.getFiles;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -10,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,11 +28,8 @@ class FileCreatorTest {
   }
 
   @AfterEach
-  public void cleanup() throws IOException {
-    Files.walk(downloadPath)
-        .sorted(Comparator.reverseOrder())
-        .map(Path::toFile)
-        .forEach(File::delete);
+  public void cleanup() {
+    deleteRecursively(downloadPath);
   }
 
   @Test
@@ -38,8 +37,10 @@ class FileCreatorTest {
   public void create_ShouldCreateNewFile() {
     FileCreator fileCreator = new FileCreator(downloadPath);
     InputStream inputStream = new ByteArrayInputStream(new byte[8]);
+
     fileCreator.create(inputStream);
-    assertTrue(downloadPath.toFile().listFiles().length == 1);
+
+    assertEquals(1, getFileCount(downloadPath));
   }
 
   @Test
@@ -47,8 +48,10 @@ class FileCreatorTest {
   public void create_ShouldCreateNewFileOfCorrectSize() {
     FileCreator fileCreator = new FileCreator(downloadPath);
     InputStream inputStream = new ByteArrayInputStream(new byte[8]);
+
     fileCreator.create(inputStream);
-    File file = downloadPath.toFile().listFiles()[0];
+
+    File file = getFiles(downloadPath)[0];
     assertEquals(8, file.length());
   }
 
@@ -62,9 +65,9 @@ class FileCreatorTest {
     fileCreator.create(inputStream);
     fileCreator.create(inputStream);
 
-    assertTrue(downloadPath.resolve("0").toFile().exists());
-    assertTrue(downloadPath.resolve("1").toFile().exists());
-    assertTrue(downloadPath.resolve("2").toFile().exists());
+    assertTrue(Files.exists(downloadPath.resolve("0")));
+    assertTrue(Files.exists(downloadPath.resolve("1")));
+    assertTrue(Files.exists(downloadPath.resolve("2")));
   }
 
   @Test
@@ -73,14 +76,14 @@ class FileCreatorTest {
     Files.createFile(downloadPath.resolve("0"));
     Files.createFile(downloadPath.resolve("1"));
     Files.createFile(downloadPath.resolve("2"));
-
     FileCreator fileCreator = new FileCreator(downloadPath);
     InputStream inputStream = new ByteArrayInputStream(new byte[8]);
+
     fileCreator.create(inputStream);
     fileCreator.create(inputStream);
 
-    assertTrue(downloadPath.resolve("3").toFile().exists());
-    assertTrue(downloadPath.resolve("4").toFile().exists());
+    assertTrue(Files.exists(downloadPath.resolve("3")));
+    assertTrue(Files.exists(downloadPath.resolve("4")));
   }
 
   @Test
@@ -108,7 +111,7 @@ class FileCreatorTest {
     }
 
     for (int i = 0; i < 20; i++) {
-      assertTrue(downloadPath.resolve(String.valueOf(i)).toFile().exists());
+      assertTrue(Files.exists(downloadPath.resolve(String.valueOf(i))));
     }
   }
 }
