@@ -70,7 +70,10 @@ public class DownloadTask implements Runnable {
   }
 
   private void sleep() throws InterruptedException {
-    int randomNum = ThreadLocalRandom.current().nextInt(minSleep, maxSleep + 1);
-    Thread.sleep(randomNum);
+    if (maxSleep == 0) {
+      return;
+    }
+    int sleepTime = ThreadLocalRandom.current().nextInt(minSleep, maxSleep + 1);
+    Thread.sleep(sleepTime);
   }
 }
