@@ -1,4 +1,4 @@
-package io.github.vonathar;
+package io.github.vonathar.executor;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package io.github.vonathar;
+package io.github.vonathar.executor;
 
 import io.github.vonathar.exception.FileCreationException;
 import io.github.vonathar.exception.HttpRequestException;

@@ -1,4 +1,4 @@
-package io.github.vonathar;
+package io.github.vonathar.executor;
 
 import me.tongfei.progressbar.DelegatingProgressBarConsumer;
 import me.tongfei.progressbar.ProgressBar;
