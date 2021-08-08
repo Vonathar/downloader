@@ -1,13 +1,13 @@
-package io.github.vonathar;
+package io.github.vonathar.executor;
 
+import static io.github.vonathar.testutils.FileUtils.deleteRecursively;
+import static io.github.vonathar.testutils.FileUtils.getFileCount;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -24,11 +24,8 @@ class DownloadExecutorTest {
   }
 
   @AfterEach
-  public void cleanup() throws IOException {
-    Files.walk(downloadPath)
-        .sorted(Comparator.reverseOrder())
-        .map(Path::toFile)
-        .forEach(File::delete);
+  public void cleanup() {
+    deleteRecursively(downloadPath);
   }
 
   @Test
@@ -43,7 +40,7 @@ class DownloadExecutorTest {
     executor.start();
 
     int expected = urls.size();
-    int downloaded = downloadPath.toFile().listFiles().length;
+    int downloaded = getFileCount(downloadPath);
     assertEquals(expected, downloaded);
   }
 
@@ -67,7 +64,7 @@ class DownloadExecutorTest {
     executor.start();
 
     int expected = urls.size();
-    int downloaded = downloadPath.toFile().listFiles().length;
+    int downloaded = getFileCount(downloadPath);
     assertEquals(expected, downloaded);
   }
 
@@ -83,7 +80,7 @@ class DownloadExecutorTest {
     executor.start();
 
     int expected = urls.size();
-    int downloaded = downloadPath.toFile().listFiles().length;
+    int downloaded = getFileCount(downloadPath);
     assertEquals(expected, downloaded);
   }
 
@@ -99,7 +96,7 @@ class DownloadExecutorTest {
     executor.start();
 
     int expected = urls.size();
-    int downloaded = downloadPath.toFile().listFiles().length;
+    int downloaded = getFileCount(downloadPath);
     assertEquals(expected, downloaded);
   }
 
@@ -115,7 +112,7 @@ class DownloadExecutorTest {
     executor.start();
 
     int expected = urls.size();
-    int downloaded = downloadPath.toFile().listFiles().length;
+    int downloaded = getFileCount(downloadPath);
     assertEquals(expected, downloaded);
   }
 
@@ -131,7 +128,7 @@ class DownloadExecutorTest {
     executor.start();
 
     int expected = urls.size();
-    int downloaded = downloadPath.toFile().listFiles().length;
+    int downloaded = getFileCount(downloadPath);
     assertEquals(expected, downloaded);
   }
 }
