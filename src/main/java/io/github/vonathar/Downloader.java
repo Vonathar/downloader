@@ -1,5 +1,6 @@
 package io.github.vonathar;
 
+import io.github.vonathar.executor.DownloadExecutor;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.Set;
@@ -30,5 +31,6 @@ public class Downloader {
   public void start() {
     DownloadExecutor downloadExecutor =
         new DownloadExecutor(urls, downloadPath, numThreads, minSleep, maxSleep, logProgress);
+    downloadExecutor.start();
   }
 }
