@@ -1,15 +1,15 @@
-package io.github.vonathar;
+package io.github.vonathar.executor;
 
+import static io.github.vonathar.testutils.FileUtils.deleteRecursively;
+import static io.github.vonathar.testutils.FileUtils.getFileCount;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.vonathar.io.FileCreator;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.FutureTask;
@@ -29,11 +29,8 @@ class DownloadTaskTest {
   }
 
   @AfterEach
-  public void cleanup() throws IOException {
-    Files.walk(downloadPath)
-        .sorted(Comparator.reverseOrder())
-        .map(Path::toFile)
-        .forEach(File::delete);
+  public void cleanup() {
+    deleteRecursively(downloadPath);
   }
 
   @SneakyThrows
@@ -44,7 +41,7 @@ class DownloadTaskTest {
     DownloadTask downloadTask = new DownloadTask(1, 5, urls, new FileCreator(downloadPath), false);
     RunnableFuture<Void> task = new FutureTask<>(downloadTask, null);
     task.run();
-    assertEquals(1, downloadPath.toFile().listFiles().length);
+    assertEquals(1, getFileCount(downloadPath));
   }
 
   @SneakyThrows
