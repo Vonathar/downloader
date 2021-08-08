@@ -1,3 +1,4 @@
 .idea
 target
 src/main/java/io/github/vonathar/Application.java
+/src/main/java/io/github/vonathar/RunnableTask.java
