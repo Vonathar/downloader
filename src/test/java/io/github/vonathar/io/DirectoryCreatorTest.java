@@ -22,6 +22,7 @@ class DirectoryCreatorTest {
   public void setup() throws IOException {
     Files.createDirectories(existingDirectory);
     Files.createFile(existingFile);
+    System.setProperty("user.home", rootDirectory.toString());
   }
 
   @AfterEach
@@ -50,6 +51,17 @@ class DirectoryCreatorTest {
   }
 
   @Test
+  void create_DeleteExisting_NoDirectoryGiven_ShouldCreateNewDirectoryInUserDownloads() {
+    DirectoryCreator directoryCreator = new DirectoryCreator(DirectoryStrategy.DELETE_EXISTING);
+    deleteRecursively(existingDirectory);
+
+    directoryCreator.create(null);
+
+    Path downloadDirectory = rootDirectory.resolve("Downloads");
+    assertEquals(1, getFileCount(downloadDirectory));
+  }
+
+  @Test
   void create_RenameCreated_ExistingDirectory_ShouldFindAlternativeNameThenCreateDirectory() {
     DirectoryCreator directoryCreator = new DirectoryCreator(DirectoryStrategy.RENAME_CREATED);
 
@@ -70,6 +82,17 @@ class DirectoryCreatorTest {
     directoryCreator.create(existingDirectory);
 
     assertEquals(1, getFileCount(rootDirectory));
+  }
+
+  @Test
+  void create_RenameCreated_NoDirectoryGiven_ShouldCreateNewDirectoryInUserDownloads() {
+    DirectoryCreator directoryCreator = new DirectoryCreator(DirectoryStrategy.RENAME_CREATED);
+    deleteRecursively(existingDirectory);
+
+    directoryCreator.create(null);
+
+    Path downloadDirectory = rootDirectory.resolve("Downloads");
+    assertEquals(1, getFileCount(downloadDirectory));
   }
 
   @Test
@@ -98,5 +121,16 @@ class DirectoryCreatorTest {
     directoryCreator.create(existingDirectory);
 
     assertEquals(1, getFileCount(rootDirectory));
+  }
+
+  @Test
+  void create_ReuseExisting_NoDirectoryGiven_ShouldCreateNewDirectoryInUserDownloads() {
+    DirectoryCreator directoryCreator = new DirectoryCreator(DirectoryStrategy.REUSE_EXISTING);
+    deleteRecursively(existingDirectory);
+
+    directoryCreator.create(null);
+
+    Path downloadDirectory = rootDirectory.resolve("Downloads");
+    assertEquals(1, getFileCount(downloadDirectory));
   }
 }

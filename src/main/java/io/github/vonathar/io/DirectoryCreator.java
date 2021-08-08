@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Comparator;
 
 public class DirectoryCreator {
@@ -17,10 +19,15 @@ public class DirectoryCreator {
 
   public Path create(Path directory) {
     try {
+      if (directory == null) {
+        return createDefault();
+      }
+
       if (Files.notExists(directory)) {
         Files.createDirectories(directory);
         return directory;
       }
+
       switch (directoryStrategy) {
         case DELETE_EXISTING:
           delete(directory);
@@ -38,6 +45,19 @@ public class DirectoryCreator {
       throw new DirectoryCreationException(
           String.format("Failed to create directory: %s", directory), e);
     }
+  }
+
+  private Path createDefault() {
+    String home = System.getProperty("user.home");
+    long timestamp = Timestamp.from(Instant.now()).getTime();
+    Path path = Path.of(home + "/Downloads/downloader_" + timestamp);
+    try {
+      Files.createDirectories(path);
+    } catch (IOException e) {
+      throw new DirectoryCreationException(
+          String.format("Failed to create default directory: %s", path), e);
+    }
+    return path;
   }
 
   private void delete(Path directory) {

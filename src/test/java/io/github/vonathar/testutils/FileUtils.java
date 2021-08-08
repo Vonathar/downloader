@@ -28,4 +28,12 @@ public class FileUtils {
   public static File[] getFiles(Path path) {
     return path.toFile().listFiles();
   }
+
+  public static void printDirectoryContent(Path path) {
+    File directory = path.toFile();
+    System.out.println("Contents of " + path + ":");
+    for (String fileName : Objects.requireNonNull(directory.list())) {
+      System.out.println(fileName);
+    }
+  }
 }
