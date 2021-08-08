@@ -17,12 +17,12 @@ public class DownloaderBuilder {
 
   private final Set<URI> urls = new HashSet<>();
   private Path urlFile;
-  private Path outputDirectory;
-  private int numThreads;
-  private int minSleep;
-  private int maxSleep;
-  private boolean logProgress;
-  private DirectoryStrategy directoryStrategy;
+  private Path downloadPath;
+  private int numThreads = 1;
+  private int minSleep = 0;
+  private int maxSleep = 0;
+  private boolean logProgress = true;
+  private DirectoryStrategy directoryStrategy = DirectoryStrategy.RENAME_CREATED;
 
   public DownloaderBuilder addUrls(Set<URI> urls) {
     this.urls.addAll(urls);
@@ -34,8 +34,8 @@ public class DownloaderBuilder {
     return this;
   }
 
-  public DownloaderBuilder outputDirectory(Path outputDirectory) {
-    this.outputDirectory = outputDirectory;
+  public DownloaderBuilder downloadPath(Path downloadPath) {
+    this.downloadPath = downloadPath;
     return this;
   }
 
@@ -66,8 +66,8 @@ public class DownloaderBuilder {
 
   public Downloader build() {
     buildUrls();
-    buildOutputDirectory();
-    return new Downloader(urls, outputDirectory, numThreads, minSleep, maxSleep, logProgress);
+    buildDownloadPath();
+    return new Downloader(urls, downloadPath, numThreads, minSleep, maxSleep, logProgress);
   }
 
   private void buildUrls() {
@@ -81,8 +81,8 @@ public class DownloaderBuilder {
     log.info("{} urls found.", urls.size());
   }
 
-  private void buildOutputDirectory() {
+  private void buildDownloadPath() {
     DirectoryCreator directoryCreator = new DirectoryCreator(directoryStrategy);
-    directoryCreator.create(outputDirectory);
+    downloadPath = directoryCreator.create(downloadPath);
   }
 }
