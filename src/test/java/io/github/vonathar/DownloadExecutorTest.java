@@ -38,7 +38,7 @@ class DownloadExecutorTest {
     int minSleep = 50;
     int maxSleep = 100;
     DownloadExecutor executor =
-        new DownloadExecutor(numThreads, downloadPath, minSleep, maxSleep, urls);
+        new DownloadExecutor(urls, downloadPath, numThreads, minSleep, maxSleep, false);
 
     executor.start();
 
@@ -62,7 +62,7 @@ class DownloadExecutorTest {
     int minSleep = 50;
     int maxSleep = 100;
     DownloadExecutor executor =
-        new DownloadExecutor(numThreads, downloadPath, minSleep, maxSleep, urls);
+        new DownloadExecutor(urls, downloadPath, numThreads, minSleep, maxSleep, false);
 
     executor.start();
 
@@ -78,7 +78,7 @@ class DownloadExecutorTest {
     int minSleep = 50;
     int maxSleep = 100;
     DownloadExecutor executor =
-        new DownloadExecutor(numThreads, downloadPath, minSleep, maxSleep, urls);
+        new DownloadExecutor(urls, downloadPath, numThreads, minSleep, maxSleep, false);
 
     executor.start();
 
@@ -94,7 +94,7 @@ class DownloadExecutorTest {
     int minSleep = 50;
     int maxSleep = 100;
     DownloadExecutor executor =
-        new DownloadExecutor(numThreads, downloadPath, minSleep, maxSleep, urls);
+        new DownloadExecutor(urls, downloadPath, numThreads, minSleep, maxSleep, false);
 
     executor.start();
 
@@ -110,7 +110,7 @@ class DownloadExecutorTest {
     int minSleep = 50;
     int maxSleep = 100;
     DownloadExecutor executor =
-        new DownloadExecutor(numThreads, downloadPath, minSleep, maxSleep, urls);
+        new DownloadExecutor(urls, downloadPath, numThreads, minSleep, maxSleep, false);
 
     executor.start();
 
@@ -126,7 +126,7 @@ class DownloadExecutorTest {
     int minSleep = 50;
     int maxSleep = 100;
     DownloadExecutor executor =
-        new DownloadExecutor(numThreads, downloadPath, minSleep, maxSleep, urls);
+        new DownloadExecutor(urls, downloadPath, numThreads, minSleep, maxSleep, false);
 
     executor.start();
 

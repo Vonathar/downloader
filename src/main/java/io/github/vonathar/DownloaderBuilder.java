@@ -1,12 +1,17 @@
 package io.github.vonathar;
 
+import io.github.vonathar.exception.NoUrlsFoundException;
 import io.github.vonathar.io.UrlFileParser;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DownloaderBuilder {
+
+  private final Logger log = LogManager.getLogger(DownloaderBuilder.class);
 
   private Set<URI> urls;
   private Path urlFile;
@@ -14,6 +19,7 @@ public class DownloaderBuilder {
   private int numThreads;
   private int minSleep;
   private int maxSleep;
+  private boolean logProgress;
 
   public DownloaderBuilder setUrls(Set<URI> urls) {
     this.urls = urls;
@@ -45,9 +51,14 @@ public class DownloaderBuilder {
     return this;
   }
 
+  public DownloaderBuilder setLogProgress(boolean logProgress) {
+    this.logProgress = logProgress;
+    return this;
+  }
+
   public Downloader build() {
     Set<URI> urls = buildUrls();
-    return new Downloader(urls, outputDirectory, numThreads, minSleep, maxSleep);
+    return new Downloader(urls, outputDirectory, numThreads, minSleep, maxSleep, logProgress);
   }
 
   private Set<URI> buildUrls() {
@@ -59,6 +70,11 @@ public class DownloaderBuilder {
       UrlFileParser urlFileParser = new UrlFileParser();
       urls.addAll(urlFileParser.parse(this.urlFile));
     }
+    if (urls.isEmpty()) {
+      throw new NoUrlsFoundException("Failed to find any URL to download.");
+    }
+
+    log.info("{} urls found.", urls.size());
     return urls;
   }
 }

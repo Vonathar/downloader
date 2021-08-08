@@ -10,17 +10,25 @@ public class Downloader {
   private final int numThreads;
   private final int minSleep;
   private final int maxSleep;
+  private final boolean logProgress;
 
-  public Downloader(Set<URI> urls, Path downloadPath, int numThreads, int minSleep, int maxSleep) {
+  public Downloader(
+      Set<URI> urls,
+      Path downloadPath,
+      int numThreads,
+      int minSleep,
+      int maxSleep,
+      boolean logProgress) {
     this.urls = urls;
     this.downloadPath = downloadPath;
     this.numThreads = numThreads;
     this.minSleep = minSleep;
     this.maxSleep = maxSleep;
+    this.logProgress = logProgress;
   }
 
   public void start() {
-    DownloadExecutor executor =
-        new DownloadExecutor(numThreads, downloadPath, minSleep, maxSleep, urls);
+    DownloadExecutor downloadExecutor =
+        new DownloadExecutor(urls, downloadPath, numThreads, minSleep, maxSleep, logProgress);
   }
 }

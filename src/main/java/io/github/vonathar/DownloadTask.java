@@ -19,19 +19,35 @@ public class DownloadTask implements Runnable {
   private final int maxSleep;
   private final Set<URI> urls;
   private final FileCreator fileCreator;
+  private final boolean logProgress;
 
-  public DownloadTask(int minSleep, int maxSleep, Set<URI> urls, FileCreator fileCreator) {
+  public DownloadTask(
+      int minSleep, int maxSleep, Set<URI> urls, FileCreator fileCreator, boolean logProgress) {
     this.minSleep = minSleep;
     this.maxSleep = maxSleep;
     this.urls = urls;
     this.fileCreator = fileCreator;
+    this.logProgress = logProgress;
   }
 
   @Override
   public void run() {
-    for (URI url : urls) {
+    log.debug("Starting download thread.");
+    Iterable<URI> iterables = getIterables();
+    for (URI url : iterables) {
       download(url);
     }
+  }
+
+  private Iterable<URI> getIterables() {
+    Iterable<URI> iterables;
+    if (logProgress) {
+      DownloadLogger downloadLogger = new DownloadLogger();
+      iterables = downloadLogger.wrapIterable(urls.size(), urls);
+    } else {
+      iterables = urls;
+    }
+    return iterables;
   }
 
   private void download(URI url) {

@@ -41,7 +41,7 @@ class DownloadTaskTest {
   public void run_ShouldDownloadFileFromTheGivenUrl() {
     Set<URI> urls = new HashSet<>();
     urls.add(URI.create("https://via.placeholder.com/1"));
-    DownloadTask downloadTask = new DownloadTask(1, 5, urls, new FileCreator(downloadPath));
+    DownloadTask downloadTask = new DownloadTask(1, 5, urls, new FileCreator(downloadPath), false);
     RunnableFuture<Void> task = new FutureTask<>(downloadTask, null);
     task.run();
     assertEquals(1, downloadPath.toFile().listFiles().length);
@@ -54,7 +54,8 @@ class DownloadTaskTest {
     urls.add(URI.create("https://via.placeholder.com/1"));
     urls.add(URI.create("https://via.placeholder.com/2"));
     urls.add(URI.create("https://via.placeholder.com/3"));
-    DownloadTask downloadTask = new DownloadTask(1000, 1001, urls, new FileCreator(downloadPath));
+    DownloadTask downloadTask =
+        new DownloadTask(1000, 1001, urls, new FileCreator(downloadPath), false);
     RunnableFuture<Void> task = new FutureTask<>(downloadTask, null);
 
     long startTime = System.nanoTime();

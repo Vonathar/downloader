@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 public class UrlFileParser {
 
-  private final Logger log = LogManager.getLogger(this.getClass().getName());
+  private final Logger log = LogManager.getLogger(UrlFileParser.class);
 
   public Set<URI> parse(Path file) {
     Set<URI> urls = new HashSet<>();
@@ -32,8 +32,6 @@ public class UrlFileParser {
     } catch (IOException e) {
       throw new FileParsingException(file, e);
     }
-
-    log.info("{} urls found.", urls.size());
     return urls;
   }
 }

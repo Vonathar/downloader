@@ -9,23 +9,34 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class DownloadExecutor {
+
+  private final Logger log = LogManager.getLogger(DownloadExecutor.class);
 
   private final ExecutorService executor;
   private final Set<DownloadTask> tasks;
   private final FileCreator fileCreator;
 
   public DownloadExecutor(
-      int numThreads, Path downloadPath, int minSleep, int maxSleep, Set<URI> urls) {
+      Set<URI> urls,
+      Path downloadPath,
+      int numThreads,
+      int minSleep,
+      int maxSleep,
+      boolean logProgress) {
+    log.debug("Creating executor with {} threads.", numThreads);
     this.executor = Executors.newFixedThreadPool(numThreads);
     this.fileCreator = new FileCreator(downloadPath);
     SetPartitioner partitioner = new SetPartitioner();
     List<Set<URI>> partitions = partitioner.partition(urls, numThreads);
-
     this.tasks =
         (partitions.stream()
-            .map(partition -> new DownloadTask(minSleep, maxSleep, partition, fileCreator))
+            .map(
+                partition ->
+                    new DownloadTask(minSleep, maxSleep, partition, fileCreator, logProgress))
             .collect(Collectors.toSet()));
   }
 
