@@ -1,5 +1,8 @@
 .idea
 target
-src/main/java/io/github/vonathar/Application.java
-/src/main/java/io/github/vonathar/RunnableTask.java
+src/main/java/io/github/vonathar/downloader/downloader/Application.java
+/src/main/java/io/github/vonathar/downloader/downloader/RunnableTask.java
 src/test/resources/live_testing*
+/src/main/java/io/github/vonathar/downloader/Application.java
+/src/test/resources/file_creator_test.jpg
+/src/main/java/io/github/vonathar/downloader/RunnableTask.java
