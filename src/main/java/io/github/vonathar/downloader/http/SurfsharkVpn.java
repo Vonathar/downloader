@@ -22,7 +22,8 @@ public class SurfsharkVpn {
         "/bin/bash", "-c",
         String.format(
             "echo %s| sudo -S %s", password,
-            "sudo surfshark-vpn down"
+            "sudo surfshark-vpn status"
+                + " && sudo surfshark-vpn down"
                 + " && echo '0' | sudo surfshark-vpn attack"
                 + " && exit")};
 
@@ -40,6 +41,10 @@ public class SurfsharkVpn {
         new InputStreamReader(process.getInputStream()));
     while ((line = input.readLine()) != null) {
       log.debug("Shell output: {}", line);
+      if (line.contains("Not connected to Surfshark VPN")) {
+        log.warn("Surfshark VPN is not connected.");
+        return;
+      }
       if (line.startsWith("Your new IP")) {
         String ip = line.substring(line.lastIndexOf(':') + 2);
         log.info("Successfully restarted VPN. New IP: {}", ip);

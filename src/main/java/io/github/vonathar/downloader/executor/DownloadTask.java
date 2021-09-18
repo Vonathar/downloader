@@ -40,7 +40,7 @@ public class DownloadTask implements Runnable {
     log.debug("Starting download thread.");
     Iterable<URI> iterables = getIterables();
     for (URI url : iterables) {
-      download(url, true);
+      download(url);
     }
   }
 
@@ -55,17 +55,14 @@ public class DownloadTask implements Runnable {
     return iterables;
   }
 
-  private void download(URI url, boolean shouldRetry) {
+  private void download(URI url) {
     InputStream stream = null;
     try {
       stream = httpClient.getImage(url);
     } catch (HttpRequestException e) {
       log.error("Failed to download image from URL: {}", url, e);
-      if (shouldRetry) {
-        surfsharkVpn.restart();
-        log.info("Retrying to download image..");
-        download(url, shouldRetry);
-      }
+      surfsharkVpn.restart();
+      download(url);
     }
     createFile(stream);
     sleep();
